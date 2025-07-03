@@ -259,7 +259,9 @@ const SignPage: FC<SignPageProps> = () => {
           console.log("savedName", savedName);
           console.log("res.data", res.data);
 
-          const url = `http://localhost:2000/uploads/${savedName}`;
+          const url = `https://document-signing-server-1.onrender.com/uploads/${savedName}`;
+          // const url = `http://localhost:2000/uploads/${savedName}`;
+
           console.log("url", url);
           setFileUrl(url);
 
@@ -287,7 +289,8 @@ const SignPage: FC<SignPageProps> = () => {
       setFileUrl(""); // שלב ראשון: נקה
       setTimeout(() => {
         const savedName = response.savedName || response.fileName || "unknown.pdf";
-        setFileUrl(`http://localhost:2000/uploads/${savedName}`);
+        // setFileUrl(`http://localhost:2000/uploads/${savedName}`);
+        setFileUrl(`https://document-signing-server-1.onrender.com/uploads/${savedName}`);
       }, 100);
     } catch (error: any) {
       console.error('שגיאה:', error);
