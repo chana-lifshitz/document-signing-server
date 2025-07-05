@@ -14,6 +14,9 @@ const port = process.env.PORT || 10000;
 // API routes
 // app.use('/api', require('./routes/api')); // או מה שיש לך
 
+app.use('/api/documents', documentRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Serve React static files
 app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -31,9 +34,6 @@ app.use(express.json({ limit: "10mb" })); // נדרש בגלל base64
 // app.use('/image', express.static(path.join(__dirname, 'uploads')));
 // ייבוא הנתיבים
 app.use(express.json());
-
-app.use('/api/documents', documentRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // app.use('/image', express.static(path.join(__dirname,'image')));
 
