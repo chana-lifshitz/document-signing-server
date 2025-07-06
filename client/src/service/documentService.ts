@@ -20,9 +20,9 @@ export function signDocument(id: string, signatureData: string) {
 
 
 export function getDocumentById(id: string) {
-  // return axios.get(`/api/documents/${id}`);
+  return axios.get(`/api/documents/${id}`);
     // return axios.get(`http://localhost:2000/api/documents/${id}`);
-  return axios.get(`${API}/api/documents/${id}`);
+  // return axios.get(`${API}/api/documents/${id}`);
 
 }
 
