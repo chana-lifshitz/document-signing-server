@@ -605,7 +605,9 @@ class Document_repository {
 
       // יצירת מזהה ולוג
       const documentId = uuidv4();
-      const signLink = `http://localhost:3000/sign/${documentId}`;
+      const clientBaseUrl = process.env.CLIENT_BASE_URL;
+      const signLink = `${clientBaseUrl}/sign/${documentId}`;
+      // const signLink = `http://localhost:3000/sign/${documentId}`;
       const logExists = fs.existsSync(logPath);
       let fileLog = logExists ? JSON.parse(fs.readFileSync(logPath, 'utf-8')) : [];
 

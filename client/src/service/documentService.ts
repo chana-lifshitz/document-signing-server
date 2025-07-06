@@ -1,4 +1,5 @@
 import axios from "axios";
+const API = process.env.REACT_APP_API_BASE_URL;
 
 export function uploadDocument(file: File) {
   const formData = new FormData();
@@ -19,8 +20,9 @@ export function signDocument(id: string, signatureData: string) {
 
 
 export function getDocumentById(id: string) {
-  return axios.get(`/api/documents/${id}`);
+  // return axios.get(`/api/documents/${id}`);
     // return axios.get(`http://localhost:2000/api/documents/${id}`);
+  return axios.get(`${API}/api/documents/${id}`);
 
 }
 
