@@ -258,7 +258,6 @@ const SignPage: FC<SignPageProps> = () => {
           const savedName = res.data.savedName;
           console.log("savedName", savedName);
           console.log("res.data", res.data);
-
           const url = `/uploads/${savedName}`;
           // const url = `http://localhost:2000/uploads/${savedName}`;
 
@@ -310,16 +309,27 @@ const SignPage: FC<SignPageProps> = () => {
           key={fileUrl} 
         />
       )}
-      <SignatureCanvas
+      {/* <SignatureCanvas
         penColor="black"
         canvasProps={{ width: 500, height: 200, className: 'sigCanvas' }}
         ref={sigCanvasRef}
-      />
+      /> */}<div className="signature-container">
+  <div className="signature-box">
+    <p className="signature-label">חתום כאן</p>
+    <SignatureCanvas
+      penColor="black"
+      canvasProps={{ width: 500, height: 200, className: 'sigCanvas' }}
+      ref={sigCanvasRef}
+    />
+  </div>
+</div>
+
+
       <button onClick={handleSubmit}>שלח חתימה</button>
       <button onClick={() => sigCanvasRef.current?.clear()}>נקה חתימה</button>
-
     </div>
   );
 };
+ 
 
 export default SignPage;

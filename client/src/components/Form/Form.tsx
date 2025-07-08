@@ -252,6 +252,8 @@ interface FormProps { }
 const Form: FC<FormProps> = () => {
   const [file, setFile] = useState<File | null>(null);
   const [link, setLink] = useState<string>("");
+  const [email, setEmail] = useState("");
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFile(e.target.files?.[0] || null);
@@ -266,7 +268,7 @@ const Form: FC<FormProps> = () => {
 
     try {
 
-      const response = await uploadDocument(file);
+      const response = await uploadDocument(file, email);
       setLink(response.data.signLink);
     } catch (error) {
       console.error("שגיאה בהעלאת הקובץ:", error);
@@ -278,6 +280,12 @@ const Form: FC<FormProps> = () => {
     <div className="Form">
       <h3>העלאת מסמכים לחתימה</h3>
       <input type="file" onChange={handleFileChange} accept=".doc,.docx" />
+      <input
+        type="email"
+        placeholder="הכנס מייל לקבלת מסמך חתום"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
       <button onClick={handleUpload}>העלה מסמך</button>
       {link && (
         <p>

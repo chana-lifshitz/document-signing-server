@@ -558,7 +558,6 @@
 //////////////////////////////////////////////////////////
 //////////////////
 
-
 // Document_repository.js
 const fs = require('fs');
 const path = require('path');
@@ -570,6 +569,8 @@ const nodemailer = require('nodemailer');
 
 const logPath = path.join(__dirname, '../uploads/files-log.json');
 const uploadsDir = path.join(__dirname, '../uploads');
+const userEmail = req.body.email;
+const adminEmail = process.env.ADMIN_EMAIL;
 
 class Document_repository {
   constructor() { }
@@ -805,6 +806,12 @@ class Document_repository {
   }
 
   async sendSignedDocumentByEmail(filePath) {
+//     await sendEmailWithFile({
+//   to: [userEmail, adminEmail], // שני נמענים
+//   subject: "מסמך לחתימה",
+//   text: "מצורף המסמך שלך",
+//   attachments: [...],
+// });
     try {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -816,7 +823,8 @@ class Document_repository {
 
       const mailOptions = {
         from: process.env.EMAIL_FROM,
-        to: process.env.EMAIL_TO,
+        // to: process.env.EMAIL_TO,
+          to: [userEmail, adminEmail], // שני נמענים
         subject: 'המסמך החתום שלך',
         text: 'מצורף המסמך החתום כקובץ PDF.',
         attachments: [

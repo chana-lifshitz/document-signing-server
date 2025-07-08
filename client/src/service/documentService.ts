@@ -1,13 +1,19 @@
 import axios from "axios";
 const API = process.env.REACT_APP_API_BASE_URL;
 
-export function uploadDocument(file: File) {
-  const formData = new FormData();
-  formData.append("file", file);
-return axios.post('/api/documents/upload', formData);
-// return axios.post('http://localhost:2000/api/documents/upload', formData);
+// export function uploadDocument(file: File) {
+//   const formData = new FormData();
+//   formData.append("file", file);
+// return axios.post('/api/documents/upload', formData);
+// // return axios.post('http://localhost:2000/api/documents/upload', formData);
 
-}
+// }
+export const uploadDocument = (file: File, email: string) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('email', email);
+  return axios.post('/api/documents/upload', formData);
+};
 
 export function signDocument(id: string, signatureData: string) {
   return axios.post(`/api/documents/sign/${id}`, {
