@@ -171,9 +171,9 @@ class Document_service {
     return await documentRepository.storeFile(file);
   }
 
-  async applySignature(id, signatureBase64) {
+  async applySignature(id, signatureBase64,email) {
     if (!id || !signatureBase64) throw new Error('פרטים חסרים לחתימה');
-    return await documentRepository.applySignatureWithConversionAndMail(id, signatureBase64);
+    return await documentRepository.applySignatureWithConversionAndMail(id, signatureBase64,email);
   }
 
   async convertDocxToPdf(docxPath, pdfPath) {

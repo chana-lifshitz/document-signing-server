@@ -278,8 +278,10 @@ const SignPage: FC<SignPageProps> = () => {
     }
 
     const signatureImage = sigCanvasRef.current?.getCanvas().toDataURL("image/png") || "";
+    const email = localStorage.getItem("userEmail") || "";
+
     try {
-      const response = await signDocument(id, signatureImage);
+      const response = await signDocument(id, signatureImage,email);
       alert("המסמך נחתם ונשמר!");
       console.log("Signed file saved at:", response.filePath);
           sigCanvasRef.current?.clear();

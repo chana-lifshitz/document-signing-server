@@ -242,7 +242,9 @@
 // }
 
 // export default Form;
+
 // components/Form.tsx
+
 import React, { FC, useState } from 'react';
 import { uploadDocument } from '../../service/documentService';
 import './Form.scss';
@@ -261,11 +263,30 @@ const Form: FC<FormProps> = () => {
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      alert("יש לבחור קובץ לפני העלאה.");
+    // if (!file) {
+    //   alert("יש לבחור קובץ לפני העלאה.");
+    //   return;
+    // }
+ if (!file || !email) {
+      alert("נא לבחור קובץ ולהזין כתובת מייל.");
       return;
     }
+localStorage.setItem("userEmail", email);
 
+    // const formData = new FormData();
+    // formData.append("file", file);
+    // formData.append("email", email);
+
+    
+  
+  //   try {
+  //     const response = await uploadDocument(formData);
+  //     setLink(response.data.signLink);
+  //   } catch (error) {
+  //     console.error("שגיאה בהעלאת הקובץ:", error);
+  //     alert("אירעה שגיאה בעת ההעלאה.");
+  //   }
+  // };
     try {
 
       const response = await uploadDocument(file, email);
@@ -275,7 +296,7 @@ const Form: FC<FormProps> = () => {
       alert("אירעה שגיאה בעת ההעלאה.");
     }
   };
-
+ 
   return (
     <div className="Form">
       <h3>העלאת מסמכים לחתימה</h3>

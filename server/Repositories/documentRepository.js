@@ -569,8 +569,6 @@ const nodemailer = require('nodemailer');
 
 const logPath = path.join(__dirname, '../uploads/files-log.json');
 const uploadsDir = path.join(__dirname, '../uploads');
-const userEmail = req.body.email;
-const adminEmail = process.env.ADMIN_EMAIL;
 
 class Document_repository {
   constructor() { }
@@ -794,24 +792,17 @@ class Document_repository {
     }
   }
 
-  async applySignatureWithConversionAndMail(id, signatureBase64) {
+  async applySignatureWithConversionAndMail(id, signatureBase64, email) {
     try {
       const inputPath = this.getFilePathById(id);
       const signedPath = await this.embedSignatureToPdf(id, signatureBase64);
-      await this.sendSignedDocumentByEmail(signedPath);
+      await this.sendSignedDocumentByEmail(signedPath, email);
       return signedPath;
     } catch (error) {
       throw new Error('שגיאה בתהליך החתימה והשליחה: ' + error.message);
     }
   }
-
-  async sendSignedDocumentByEmail(filePath) {
-//     await sendEmailWithFile({
-//   to: [userEmail, adminEmail], // שני נמענים
-//   subject: "מסמך לחתימה",
-//   text: "מצורף המסמך שלך",
-//   attachments: [...],
-// });
+  async sendSignedDocumentByEmail(filePath, userEmail) {
     try {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -824,7 +815,7 @@ class Document_repository {
       const mailOptions = {
         from: process.env.EMAIL_FROM,
         // to: process.env.EMAIL_TO,
-          to: [userEmail, adminEmail], // שני נמענים
+          to: [userEmail, process.env.ADMIN_EMAIL], // שני נמענים
         subject: 'המסמך החתום שלך',
         text: 'מצורף המסמך החתום כקובץ PDF.',
         attachments: [
