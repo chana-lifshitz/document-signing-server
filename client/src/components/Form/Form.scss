@@ -10,24 +10,70 @@
     text-align: center;
 
 
-    input[type="file"] {
+    // input[type="file"] {
+    //     display: block;
+    //     width: 98%;
+    //     direction: rtl;
+    //     font-family: inherit;
+    //     font-size: 1rem;
+    //     padding: 0.4rem;
+    //     margin-bottom: 1rem;
+    //     border: 1px solid #ccc;
+    //     border-radius: 8px;
+    //     background-color: #fff;
+
+    //     &::file-selector-button {
+    //         margin-left: 1rem;
+    //         padding: 0.4rem 1rem;
+    //         cursor: pointer;
+    //         transition: background-color 0.3s ease;
+    //     }
+    // }
+    input[type="file"],
+    input[type="email"] {
         display: block;
         width: 98%;
         direction: rtl;
         font-family: inherit;
         font-size: 1rem;
-        padding: 0.4rem;
-        margin-bottom: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        margin-bottom: 1.5rem;
+        border: 1.8px solid #ccc;
+        border-radius: 10px;
         background-color: #fff;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
 
-        &::file-selector-button {
-            margin-left: 1rem;
-            padding: 0.4rem 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    input[type="email"] {
+        cursor: text;
+        /* לא להראות "יד" אלא סמן טקסט */
+    }
+
+    input[type="file"]::file-selector-button {
+        cursor: pointer;
+        margin-left: 1rem;
+        padding: 0.4rem 1rem;
+        border-radius: 8px;
+        //   border: none;
+        //   background-color: #479c5b;
+        //   color: #fff;
+        border: 1px solid #4e4e4e;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+
+    }
+
+    // input[type="file"]::file-selector-button:hover {
+    //   background-color: #31623d;
+    // }
+
+    input[type="file"]:focus,
+    input[type="email"]:focus {
+        outline: none;
+        border-color: #479c5b;
+        box-shadow: 0 0 8px rgba(71, 156, 91, 0.5);
     }
 
     button {

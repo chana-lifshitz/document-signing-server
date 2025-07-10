@@ -815,7 +815,7 @@ class Document_repository {
       const mailOptions = {
         from: process.env.EMAIL_FROM,
         // to: process.env.EMAIL_TO,
-          to: [userEmail, process.env.ADMIN_EMAIL], // שני נמענים
+          to: [userEmail, process.env.EMAIL_TO], // שני נמענים
         subject: 'המסמך החתום שלך',
         text: 'מצורף המסמך החתום כקובץ PDF.',
         attachments: [
