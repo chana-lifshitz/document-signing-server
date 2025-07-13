@@ -8,7 +8,7 @@ const Form: FC<FormProps> = () => {
   const [file, setFile] = useState<File | null>(null);
   const [link, setLink] = useState<string>("");
   const [email, setEmail] = useState("");
-const [isUploading, setIsUploading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFile(e.target.files?.[0] || null);
@@ -21,7 +21,7 @@ const [isUploading, setIsUploading] = useState(false);
       return;
     }
     localStorage.setItem("userEmail", email);
-      setIsUploading(true); // ← התחלת טעינה
+    setIsUploading(true); // ← התחלת טעינה
     try {
       const response = await uploadDocument(file, email);
       setLink(response.data.signLink);
@@ -29,9 +29,9 @@ const [isUploading, setIsUploading] = useState(false);
       console.error("שגיאה בהעלאת הקובץ:", error);
       alert("אירעה שגיאה בעת ההעלאה.");
     }
-     finally {
-    setIsUploading(false); // ← סיום טעינה
-  }
+    finally {
+      setIsUploading(false); // ← סיום טעינה
+    }
   };
   return (
     <div className="Form">
@@ -45,12 +45,11 @@ const [isUploading, setIsUploading] = useState(false);
       />
       <button onClick={handleUpload}>העלה מסמך</button>
       {isUploading && (
-  <div className="loading">
-    <span className="spinner"></span>
-    <p>מעלה מסמך...</p>
-  </div>
-)}
-
+        <div className="loading">
+          <span className="spinner"></span>
+          <p>מעלה מסמך...</p>
+        </div>
+      )}
       {link && (
         <p>
           קישור לחתימה:
