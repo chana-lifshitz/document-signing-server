@@ -31,7 +31,7 @@ const Form: FC<FormProps> = () => {
 
   return (
     <div className="Form">
-      <h3>העלאת מסמכים לחתימה</h3>
+      <h3>העלאת מסמך לחתימה</h3>
       <input type="file" onChange={handleFileChange} accept=".doc,.docx" />
       <input
         type="email"

@@ -49,7 +49,7 @@ router.post('/sign/:id', async (req, res) => {
         message: 'חתימה לא סופקה'
       });
     }
-    const adminEmail = process.env.ADMIN_EMAIL;
+    // const adminEmail = process.env.ADMIN_EMAIL;
     const updatedFilePath = await documentService.applySignature(id, signatureData, email);
     const savedName = path.basename(updatedFilePath); // מחלץ את שם הקובץ מהנתיב
     res.status(200).json({

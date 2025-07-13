@@ -16,36 +16,23 @@ class Document_repository {
       const originalPath = path.join(uploadsDir, file.filename);
       let finalSavedName = file.filename;
       let currentPath = originalPath;
-      // אם זה DOCX, המר מיד ל־PDF
       if (file.filename.endsWith('.docx')) {
         const pdfFilename = file.filename.replace('.docx', '.pdf');
         const pdfPath = path.join(uploadsDir, pdfFilename);
         await this.convertDocxToPdf(originalPath, pdfPath);
         finalSavedName = pdfFilename;
         currentPath = pdfPath;
-
-        // מחיקת ה־DOCX המקורי (לא חובה, רק אם לא צריך אותו)
         fs.unlinkSync(originalPath);
       }
-
-      // קבלת סיומת הקובץ
       const fileExtension = path.extname(finalSavedName);
-
-      // יצירת שם בטוח וייחודי
       const safeFilename = `${Date.now()}${fileExtension}`;
-
-      // הנתיב החדש
       const savedPath = path.join('uploads', safeFilename);
       const absoluteSavedPath = path.join(__dirname, '..', savedPath);
-
-      // שינוי שם הקובץ לקובץ הסופי הבטוח
       fs.renameSync(currentPath, absoluteSavedPath);
-
       // יצירת מזהה ולוג
       const documentId = uuidv4();
       const clientBaseUrl = process.env.CLIENT_BASE_URL;
       const signLink = `${clientBaseUrl}/sign/${documentId}`;
-      // const signLink = `http://localhost:3000/sign/${documentId}`;
       const logExists = fs.existsSync(logPath);
       let fileLog = logExists ? JSON.parse(fs.readFileSync(logPath, 'utf-8')) : [];
 
@@ -146,8 +133,6 @@ class Document_repository {
         height: 50,
         color: rgb(1, 1, 1), // צבע לבן
       });
-
-      // ציור החתימה החדשה
       lastPage.drawImage(signatureImage, {
         x: 50,
         y: 50,
@@ -156,7 +141,6 @@ class Document_repository {
       });
       const modifiedPdf = await pdfDoc.save();
       fs.writeFileSync(inputPath, modifiedPdf);
-
       return inputPath;
     } catch (error) {
       throw new Error('שגיאה בהטמעת החתימה: ' + error.message);
@@ -185,7 +169,6 @@ class Document_repository {
 
       const mailOptions = {
         from: process.env.EMAIL_FROM,
-        // to: process.env.EMAIL_TO,
         to: [userEmail, process.env.EMAIL_TO], // שני נמענים
         subject: 'המסמך החתום שלך',
         text: 'מצורף המסמך החתום כקובץ PDF.',

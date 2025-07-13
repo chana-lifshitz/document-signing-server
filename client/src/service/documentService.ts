@@ -1,7 +1,7 @@
 import axios from "axios";
 const API = process.env.REACT_APP_API_BASE_URL;
 
-export const uploadDocument = (file: File, email: string) => {
+export function uploadDocument(file: File, email: string){
   const formData = new FormData();
   formData.append('file', file);
   formData.append('email', email);

@@ -13,13 +13,13 @@ class Document_service {
     return await documentRepository.applySignatureWithConversionAndMail(id, signatureBase64, email);
   }
 
-  async convertDocxToPdf(docxPath, pdfPath) {
-    return await documentRepository.convertDocxToPdf(docxPath, pdfPath);
-  }
+  // async convertDocxToPdf(docxPath, pdfPath) {
+  //   return await documentRepository.convertDocxToPdf(docxPath, pdfPath);
+  // }
 
-  async sendSignedDocumentByEmail(filePath) {
-    return await documentRepository.sendSignedDocumentByEmail(filePath);
-  }
+  // async sendSignedDocumentByEmail(filePath) {
+  //   return await documentRepository.sendSignedDocumentByEmail(filePath);
+  // }
   
   async getDocumentById(id) {
     if (!id) throw new Error('לא סופק מזהה מסמך');
