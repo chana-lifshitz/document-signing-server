@@ -7,6 +7,7 @@ const documentService = require('../Servises/documentService');
 const uploadsDir = path.join(__dirname, '../uploads');
 
 // הגדרת multer – שמירה בתיקיית uploads, שם עם תאריך
+//מגדירה את האחסון של קבצים שמועלים לשרת
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadsDir);
@@ -17,7 +18,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
 
 // שמירת קובץ והחזרת מזהה וקישור חתימה
 router.post('/upload', upload.single('file'), async (req, res) => {
@@ -49,7 +49,6 @@ router.post('/sign/:id', async (req, res) => {
         message: 'חתימה לא סופקה'
       });
     }
-    // const adminEmail = process.env.ADMIN_EMAIL;
     const updatedFilePath = await documentService.applySignature(id, signatureData, email);
     const savedName = path.basename(updatedFilePath); // מחלץ את שם הקובץ מהנתיב
     res.status(200).json({

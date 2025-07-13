@@ -5,7 +5,7 @@ class Document_service {
 
   async saveFile(file) {
     if (!file) throw new Error('לא התקבל קובץ');
-    return await documentRepository.storeFile(file);
+    return await documentRepository.savingDocument(file);
   }
 
   async applySignature(id, signatureBase64, email) {
@@ -13,14 +13,6 @@ class Document_service {
     return await documentRepository.applySignatureWithConversionAndMail(id, signatureBase64, email);
   }
 
-  // async convertDocxToPdf(docxPath, pdfPath) {
-  //   return await documentRepository.convertDocxToPdf(docxPath, pdfPath);
-  // }
-
-  // async sendSignedDocumentByEmail(filePath) {
-  //   return await documentRepository.sendSignedDocumentByEmail(filePath);
-  // }
-  
   async getDocumentById(id) {
     if (!id) throw new Error('לא סופק מזהה מסמך');
     return await documentRepository.getDocumentById(id);

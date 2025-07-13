@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const { PDFDocument, rgb } = require('pdf-lib');
-
 const libre = require('libreoffice-convert');
 const nodemailer = require('nodemailer');
 
@@ -11,7 +10,7 @@ const uploadsDir = path.join(__dirname, '../uploads');
 
 class Document_repository {
   constructor() { }
-  async storeFile(file) {
+  async savingDocument(file) {
     try {
       const originalPath = path.join(uploadsDir, file.filename);
       let finalSavedName = file.filename;
@@ -82,19 +81,17 @@ class Document_repository {
       throw new Error('שגיאה בשליפת נתיב הקובץ: ' + error.message);
     }
   }
-
+//ממיר לPDF
   async convertDocxToPdf(inputPath, outputPath) {
     return new Promise((resolve, reject) => {
       try {
         if (!fs.existsSync(inputPath)) {
           return reject(new Error('קובץ DOCX לא נמצא'));
         }
-
         const ext = '.pdf';
         const file = fs.readFileSync(inputPath);
         libre.convert(file, ext, undefined, (err, done) => {
           if (err) return reject(err);
-
           fs.writeFileSync(outputPath, done);
           resolve();
         });
@@ -104,22 +101,21 @@ class Document_repository {
     });
   }
 
+//שולחת להתמאה ושולחת למייל
+  async applySignatureWithConversionAndMail(id, signatureBase64, email) {
+    try {
+      const inputPath = this.getFilePathById(id);
+      const signedPath = await this.embedSignatureToPdf(id, signatureBase64);
+      await this.sendSignedDocumentByEmail(signedPath, email);
+      return signedPath;
+    } catch (error) {
+      throw new Error('שגיאה בתהליך החתימה והשליחה: ' + error.message);
+    }
+  }
+  //מטמעיה חתימה
   async embedSignatureToPdf(id, signatureBase64) {
     try {
-      if (!fs.existsSync(logPath)) {
-        throw new Error('קובץ לוג לא קיים');
-      }
-
-      const logData = JSON.parse(fs.readFileSync(logPath, 'utf-8'));
-      const fileEntry = logData.find(doc => doc.id === id);
-      if (!fileEntry) throw new Error('מסמך לא נמצא');
-
-      let inputPath = path.join(uploadsDir, fileEntry.savedName);
-
-      if (!fs.existsSync(inputPath)) {
-        throw new Error('קובץ המקור לא נמצא');
-      }
-
+      const inputPath = this.getFilePathById(id); 
       const fileBuffer = fs.readFileSync(inputPath);
       const pdfDoc = await PDFDocument.load(fileBuffer);
       const base64Data = signatureBase64.split(',')[1];
@@ -146,17 +142,7 @@ class Document_repository {
       throw new Error('שגיאה בהטמעת החתימה: ' + error.message);
     }
   }
-
-  async applySignatureWithConversionAndMail(id, signatureBase64, email) {
-    try {
-      const inputPath = this.getFilePathById(id);
-      const signedPath = await this.embedSignatureToPdf(id, signatureBase64);
-      await this.sendSignedDocumentByEmail(signedPath, email);
-      return signedPath;
-    } catch (error) {
-      throw new Error('שגיאה בתהליך החתימה והשליחה: ' + error.message);
-    }
-  }
+  //שולח מייל
   async sendSignedDocumentByEmail(filePath, userEmail) {
     try {
       const transporter = nodemailer.createTransport({
