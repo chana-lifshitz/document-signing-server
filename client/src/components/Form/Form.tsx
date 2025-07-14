@@ -21,7 +21,7 @@ const Form: FC<FormProps> = () => {
       return;
     }
     localStorage.setItem("userEmail", email);
-    setIsUploading(true); // ← התחלת טעינה
+    setIsUploading(true);
     try {
       const response = await uploadDocument(file, email);
       setLink(response.data.signLink);
@@ -30,7 +30,7 @@ const Form: FC<FormProps> = () => {
       alert("אירעה שגיאה בעת ההעלאה.");
     }
     finally {
-      setIsUploading(false); // ← סיום טעינה
+      setIsUploading(false);
     }
   };
   return (

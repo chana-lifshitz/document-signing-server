@@ -59,6 +59,26 @@ class Document_repository {
     }
   }
 
+//ממיר לPDF
+  async convertDocxToPdf(inputPath, outputPath) {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!fs.existsSync(inputPath)) {
+          return reject(new Error('קובץ DOCX לא נמצא'));
+        }
+        const ext = '.pdf';
+        const file = fs.readFileSync(inputPath);
+        libre.convert(file, ext, undefined, (err, done) => {
+          if (err) return reject(err);
+          fs.writeFileSync(outputPath, done);
+          resolve();
+        });
+      } catch (error) {
+        reject(new Error('שגיאה בהמרת DOCX ל־PDF: ' + error.message));
+      }
+    });
+  }
+
   getFilePathById(id) {
     try {
       if (!fs.existsSync(logPath)) {
@@ -81,41 +101,19 @@ class Document_repository {
       throw new Error('שגיאה בשליפת נתיב הקובץ: ' + error.message);
     }
   }
-//ממיר לPDF
-  async convertDocxToPdf(inputPath, outputPath) {
-    return new Promise((resolve, reject) => {
-      try {
-        if (!fs.existsSync(inputPath)) {
-          return reject(new Error('קובץ DOCX לא נמצא'));
-        }
-        const ext = '.pdf';
-        const file = fs.readFileSync(inputPath);
-        libre.convert(file, ext, undefined, (err, done) => {
-          if (err) return reject(err);
-          fs.writeFileSync(outputPath, done);
-          resolve();
-        });
-      } catch (error) {
-        reject(new Error('שגיאה בהמרת DOCX ל־PDF: ' + error.message));
-      }
-    });
-  }
 
-//שולחת להתמאה ושולחת למייל
   async applySignatureWithConversionAndMail(id, signatureBase64, email) {
     try {
       const inputPath = this.getFilePathById(id);
-      const signedPath = await this.embedSignatureToPdf(id, signatureBase64);
+      const signedPath = await this.embedSignatureToPdf(inputPath, signatureBase64);
       await this.sendSignedDocumentByEmail(signedPath, email);
       return signedPath;
     } catch (error) {
       throw new Error('שגיאה בתהליך החתימה והשליחה: ' + error.message);
     }
   }
-  //מטמעיה חתימה
-  async embedSignatureToPdf(id, signatureBase64) {
+  async embedSignatureToPdf(inputPath, signatureBase64) {
     try {
-      const inputPath = this.getFilePathById(id); 
       const fileBuffer = fs.readFileSync(inputPath);
       const pdfDoc = await PDFDocument.load(fileBuffer);
       const base64Data = signatureBase64.split(',')[1];
